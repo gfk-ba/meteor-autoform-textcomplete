@@ -68,20 +68,30 @@ Template.afTextcomplete.helpers({
 
         delete atts.textcompleteStrategies;
         delete atts.textcompleteOptions;
+        delete atts.customEvents;
 
         return atts;
     }
 });
 
-Template.afTextcomplete.rendered = function () {
+Template.afTextcomplete.onRendered(function () {
     var $input = this.$('textarea'),
         atts = this.data.atts;
 
-    $input.textcomplete(atts.textcompleteStrategies, atts.textcompleteOptions);
-};
+    var textComplete = $input.textcomplete(atts.textcompleteStrategies, atts.textcompleteOptions);
 
-Template.afTextcomplete.destroyed = function () {
+    if (atts.customEvents) {
+        _.each(atts.customEvents, function (fn, event) {
+            if(_.isFunction(fn)) {
+                textComplete.on(event, fn);
+            }
+        });
+    }
+
+});
+
+Template.afTextcomplete.onDestroyed(function () {
     var $input = this.$('textarea');
 
     $input.textcomplete('destroy');
-};
+});

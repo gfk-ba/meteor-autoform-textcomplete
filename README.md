@@ -48,3 +48,28 @@ Or on the `afFieldInput` component or any component that passes along attributes
 
 {{> afFieldInput name="tags" type="textcomplete" textcompleteStrategies=textcompleteStrategies textCompleteOptions=textCompleteOptions}}
 ```
+### Attaching custom events to the textcomplete
+You can add custom events to the textComplete by adding a customEvents object to the attributes. The events will be added when the textComplete finishes rendering.
+```js
+{
+  tags: {
+    type: [String],
+    autoform: {
+      type: "textcomplete",
+      afFieldInput: {
+          textcompleteStrategies: [
+              {
+                  // strategy
+              }
+          ],
+          textCompleteOptions: {
+              // options
+          },
+          customEvents: {
+            'textComplete:select': answerSelectHandler.bind(Template.instance())
+          },
+      }
+    }
+  }
+}
+```
